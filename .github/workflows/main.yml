@@ -1,0 +1,75 @@
+name: CI + CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+      - name: Installer PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+      - name: Installer dépendances
+        run: composer install --prefer-dist --no-progress --no-interaction
+      - name: Lancer les tests
+        run: vendor/bin/phpunit --testdox
+
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+      - name: Installer PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+      - name: Installer dépendances
+        run: composer install --prefer-dist --no-progress --no-interaction
+      - name: Analyse statique
+        run: vendor/bin/phpstan analyse src --level=max
+
+  phpcsfixer:
+    name: PHP CS Fixer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+      - name: Installer PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+      - name: Installer dépendances
+        run: composer install --prefer-dist --no-progress --no-interaction
+      - name: Vérifier le style PSR-12
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no .
+
+  deploy:
+    name: Déploiement (lesacteursduweb.fr)
+    runs-on: ubuntu-latest
+    needs: [phpunit, phpstan, phpcsfixer]   # ← ne déploie que si tout est vert
+    if: ${{ success() }}                     # ← blocage automatique si un job échoue
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+      - name: Configurer l'agent SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Déployer sur le serveur
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@lesacteursduweb.fr "
+            cd ~/www_github &&
+            git pull origin main &&
+            composer install --no-dev --no-interaction --prefer-dist
+          "
