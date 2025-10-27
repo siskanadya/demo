@@ -1,0 +1,24 @@
+name: Analyse du code avec PHPStan             # Nom du workflow
+on:
+  push:
+    branches: [ main ]                         # Déclenché lors d’un push sur la branche main
+  pull_request:
+    branches: [ main ]                         # Déclenché lors d’une pull request vers main
+
+jobs:
+  phpstan:                                     # Nom du job
+    runs-on: ubuntu-latest                     # Exécution sur la dernière version d’Ubuntu
+    steps:
+      - name: Récupérer le code source
+        uses: actions/checkout@v2              # Télécharge le contenu du dépôt GitHub
+
+      - name: Installer PHP
+        uses: shivammathur/setup-php@v2        # Installe PHP sur la machine virtuelle
+        with:
+          php-version: '8.4'                   # Utilise la version 8.4 de PHP
+
+      - name: Installer les dépendances
+        run: composer install --prefer-dist --no-progress --no-suggest  # Installe les dépendances avec Composer
+
+      - name: Lancer l’analyse statique
+        run: vendor/bin/phpstan analyse src --level=max  # Analyse le code PHP pour détecter les erreurs potentielles

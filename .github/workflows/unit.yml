@@ -1,0 +1,24 @@
+name: Intégration Continue PHP               # Nom du workflow
+on:
+  push:
+    branches: [ main ]                       # Déclenché lors d’un push sur la branche main
+  pull_request:
+    branches: [ main ]                       # Déclenché lors d’une pull request vers main
+
+jobs:
+  build:                                     # Nom du job
+    runs-on: ubuntu-latest                   # S’exécute sur la dernière version d’Ubuntu
+    steps:
+      - name: Récupérer le code source
+        uses: actions/checkout@v2            # Télécharge le contenu du dépôt
+
+      - name: Installer PHP
+        uses: shivammathur/setup-php@v2      # Installe PHP sur la machine virtuelle
+        with:
+          php-version: '8.4'                 # Utilise la version 8.4 de PHP
+
+      - name: Installer les dépendances
+        run: composer install --prefer-dist --no-progress --no-suggest  # Installe les bibliothèques du projet avec Composer
+
+      - name: Lancer les tests unitaires
+        run: vendor/bin/phpunit              # Exécute les tests avec PHPUnit
