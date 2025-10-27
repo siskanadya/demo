@@ -6,7 +6,7 @@ class Math
 {
     public function addition(float $a, float $b): float
     {
-        return $a - $b;
+        return $a + $b;
     }
 
     public function soustraction(float $a, float $b): float
