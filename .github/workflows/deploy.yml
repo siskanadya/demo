@@ -25,5 +25,4 @@ jobs:
             cd ~/www_github &&
             git pull origin main &&  # Récupère les dernières modifications du code
             composer install --no-dev &&  # Installe les dépendances PHP sans les modules de dev
-            php artisan migrate --force  # Exécute les migrations de base de données (Laravel)
           "
