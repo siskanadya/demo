@@ -24,7 +24,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest  # Installe les dépendances PHP
 
       - name: Lancer les tests unitaires
-        run: vendor/bin/phpunit --testdox -v    # Exécute les tests unitaires avec un affichage lisible\
+        run: vendor/bin/phpunit --testdox  # Exécute les tests unitaires avec un affichage lisible\
       - name: Debug env
         run: |
           php -v
