@@ -3,7 +3,7 @@
         'name' => 'fransiskanadya/demo',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '858714c2ac36b70823826351b6c6b287c23ff77d',
+        'reference' => '8f6017fa3d157fc8a879123c6125a1549100c556',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -67,7 +67,7 @@
         'fransiskanadya/demo' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '858714c2ac36b70823826351b6c6b287c23ff77d',
+            'reference' => '8f6017fa3d157fc8a879123c6125a1549100c556',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
