@@ -16,7 +16,7 @@ jobs:
       - name: Installer PHP
         uses: shivammathur/setup-php@v2      # Installe PHP sur la machine virtuelle
         with:
-          php-version: '8.3'                 # ✅ PHP 8.3 est plus stable que 8.4 actuellement
+          php-version: '8.3'                 
           coverage: none
           extensions: mbstring, intl
 

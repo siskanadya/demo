@@ -15,7 +15,7 @@ jobs:
       - name: Installer PHP
         uses: shivammathur/setup-php@v2          # Installe PHP sur la machine virtuelle
         with:
-          php-version: '8.3'                     # Utilise la version 8.4 de PHP
+          php-version: '8.3'                  
 
       - name: Installer les dépendances
         run: composer install --prefer-dist --no-progress --no-suggest  # Installe les dépendances avec Composer
