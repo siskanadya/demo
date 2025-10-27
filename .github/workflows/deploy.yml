@@ -1,28 +1,28 @@
 # .github/workflows/deploy.yml
-name: Deploy via SSH  # Nom du workflow
+name: Deploy via SSH
 
 on:
   push:
     branches:
-      - main  # Déclenchement : à chaque push sur la branche main
+      - main
 
 jobs:
-  deploy:  # Nom du job
-    runs-on: ubuntu-latest  # Le job s’exécute sur la dernière version d’Ubuntu
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Télécharge le code source du dépôt GitHub
+        uses: actions/checkout@v4
 
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0  # Configure l’accès SSH pour le déploiement
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Utilise la clé privée stockée dans les secrets GitHub
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@lesacteursduweb.fr "
             cd ~/www_github &&
-            git pull origin main &&  # Récupère les dernières modifications du code
-            composer install --no-dev &&  # Installe les dépendances PHP sans les modules de dev
+            git pull origin main &&
+            composer install --no-dev --no-interaction --prefer-dist
           "
